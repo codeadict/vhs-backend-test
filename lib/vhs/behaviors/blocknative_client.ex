@@ -8,5 +8,5 @@ defmodule Vhs.Behaviors.BlocknativeClient do
   @callback watch_address(request_body :: map()) :: request_response()
   @callback stop_watching_tx(request_body :: map()) :: request_response()
 
-  @optional_callbacks [stop_watching_tx: 2, watch_address: 2]
+  @optional_callbacks [stop_watching_tx: 1, watch_address: 1]
 end

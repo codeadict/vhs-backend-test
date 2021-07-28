@@ -11,7 +11,7 @@ defmodule Vhs.Clients.Blocknative do
   def watch_tx(body) do
     config = client_config()
 
-    case Vhs.Clients.HTTP.post(body, client_config: config) do
+    case Vhs.HTTP.post(body, client_config: config) do
       {:ok, _} ->
         :ok?
 

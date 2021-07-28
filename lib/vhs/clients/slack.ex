@@ -5,9 +5,7 @@ defmodule Vhs.Clients.Slack do
   Ideally the client_config will return api keys or anything else to custommize the request.
   """
 
-  @behaviour Vhs.Behavior.SlackClient
-
-  alias Vhs.Client
+  @behaviour Vhs.Behaviors.SlackClient
 
   @impl true
   def webhook_post(body) do
