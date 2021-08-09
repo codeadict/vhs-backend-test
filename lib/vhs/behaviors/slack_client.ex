@@ -3,6 +3,5 @@ defmodule Vhs.Behaviors.SlackClient do
 
   @type request_response :: {:ok, response :: String.t()} | {:error, response :: String.t()}
 
-  @callback webhook_post(request_body :: map()) :: request_response()
-  @callback client_config() :: map()
+  @callback webhook_post(chain_response :: map()) :: request_response()
 end

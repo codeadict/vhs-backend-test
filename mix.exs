@@ -22,6 +22,13 @@ defmodule Vhs.MixProject do
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
-    []
+    [
+      {:tesla, "~> 1.4"},
+      {:gun, "~> 1.3"},
+      {:jason, "~> 1.2"},
+      {:idna, "~> 6.0"},
+      {:castore, "~> 0.1"},
+      {:plug_cowboy, "~> 2.0"}
+    ]
   end
 end

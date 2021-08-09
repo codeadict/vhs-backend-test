@@ -5,23 +5,24 @@ defmodule Vhs.Clients.Blocknative do
   Ideally the client_config will return api keys, network, etc...
   """
 
+  require Logger
+
   @behaviour Vhs.Behaviors.BlocknativeClient
+
+  @client_config Application.compile_env!(:vhs, :blocknative)
 
   @impl true
   def watch_tx(body) do
-    config = client_config()
+    case Vhs.HTTP.post("/transaction", body, @client_config) do
+      {:ok, response} ->
+        {:ok, response}
 
-    case Vhs.HTTP.post(body, client_config: config) do
-      {:ok, _} ->
-        :ok?
+      {:error, error} ->
+        Logger.error(
+          "Received error trying to watch #{inspect(body.hash)} with reason #{inspect(error)}"
+        )
 
-      {:error, _} ->
-        :error?
+        {:error, error}
     end
-  end
-
-  @impl true
-  def client_config do
-    %{}
   end
 end
