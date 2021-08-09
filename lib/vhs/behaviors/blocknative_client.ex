@@ -1,11 +1,9 @@
 defmodule Vhs.Behaviors.BlocknativeClient do
-  @moduledoc false
+  @moduledoc """
+  Blocknative behavior. We can use or ignore this module although it's already implemented.
+  """
 
-  @type request_response :: {:ok, response :: String.t()} | {:error, response :: String.t()}
+  @type request_response :: {:ok, response :: Tesla.Env.t()} | {:error, response :: any()}
 
   @callback watch_tx(request_body :: map()) :: request_response()
-  @callback watch_address(request_body :: map()) :: request_response()
-  @callback stop_watching_tx(request_body :: map()) :: request_response()
-
-  @optional_callbacks [stop_watching_tx: 1, watch_address: 1]
 end

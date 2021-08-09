@@ -1,8 +1,5 @@
 defmodule VhsTest do
-  use ExUnit.Case
-  doctest Vhs
+  @moduledoc false
 
-  test "greets the world" do
-    assert Vhs.hello() == :world
-  end
+  use ExUnit.Case
 end
