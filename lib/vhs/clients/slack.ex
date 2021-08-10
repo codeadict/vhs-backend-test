@@ -9,6 +9,7 @@ defmodule Vhs.Clients.Slack do
 
   @behaviour Vhs.Behaviors.SlackClient
 
+  @caller Application.compile_env!(:vhs, :username)
   @client_config Application.compile_env!(:vhs, :slack)
 
   @impl true
@@ -18,6 +19,13 @@ defmodule Vhs.Clients.Slack do
       attachments: [
         %{
           blocks: [
+            %{
+              type: "section",
+              text: %{
+                type: "mrkdwn",
+                text: "*From: #{@caller}*"
+              }
+            },
             %{
               type: "section",
               text: %{
