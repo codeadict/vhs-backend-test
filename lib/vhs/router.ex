@@ -5,9 +5,9 @@ defmodule Vhs.Router do
 
   use Plug.Router
 
-  alias Vhs.Clients.Slack
-
   require Logger
+
+  alias Vhs.Clients.Slack
 
   plug(Plug.Logger)
   plug(:match)
