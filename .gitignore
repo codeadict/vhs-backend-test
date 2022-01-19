@@ -25,3 +25,6 @@ vhs-*.tar
 
 # Temporary files for e.g. tests
 /tmp
+
+# Local env config
+.envrc.local

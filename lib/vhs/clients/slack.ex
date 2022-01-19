@@ -4,18 +4,45 @@ defmodule Vhs.Clients.Slack do
 
   Ideally the client_config will return api keys or anything else to custommize the request.
   """
-
   require Logger
 
-  @behaviour Vhs.Behaviors.SlackClient
+  use Vhs.Clients.Transport.HTTP, base_url: "https://hooks.slack.com/services"
 
   @caller Application.compile_env!(:vhs, :username)
-  @client_config Application.compile_env!(:vhs, :slack)
 
-  @impl true
+  @spec webhook_post(map()) :: Tesla.Env.result()
   def webhook_post(chain_response) do
-    body = %{
-      text: "*#{chain_response["hash"]} got mined*",
+    config = Application.get_env(:vhs, :slack)
+    body = build_body(chain_response)
+
+    case post(config.webhook_key, body) do
+      {:ok, %Tesla.Env{status: status} = resp} when status in 200..201 ->
+        {:ok, resp}
+
+      {:ok, %Tesla.Env{status: status, body: body}} ->
+        Logger.error(
+          "Received #{status} error trying to post to Slack with response #{inspect(body)}"
+        )
+
+        {:error, :slack_error}
+
+      {:error, error} ->
+        Logger.error("Received error trying to post to Slack with reason #{inspect(error)}")
+
+        {:error, error}
+    end
+  end
+
+  defp build_body(chain_response) do
+    hash = Access.get(chain_response, "hash")
+
+    status =
+      chain_response
+      |> Access.get("status", "")
+      |> String.capitalize()
+
+    %{
+      text: "*#{hash} got mined*",
       attachments: [
         %{
           blocks: [
@@ -30,7 +57,7 @@ defmodule Vhs.Clients.Slack do
               type: "section",
               text: %{
                 type: "mrkdwn",
-                text: "*Status: #{String.capitalize(chain_response["status"])}*"
+                text: "*Status: #{status}*"
               }
             },
             %{
@@ -44,23 +71,12 @@ defmodule Vhs.Clients.Slack do
               type: "section",
               text: %{
                 type: "mrkdwn",
-                text:
-                  "<https://etherscan.com/tx/#{chain_response["hash"]}|Etherscan> :male-detective:"
+                text: "<https://etherscan.com/tx/#{hash}|Etherscan> :male-detective:"
               }
             }
           ]
         }
       ]
     }
-
-    case Vhs.HTTP.post(@client_config.webhook_key, body, @client_config) do
-      {:ok, response} ->
-        {:ok, response}
-
-      {:error, error} ->
-        Logger.error("Received error trying to post to Slack with reason #{inspect(error)}")
-
-        {:error, error}
-    end
   end
 end

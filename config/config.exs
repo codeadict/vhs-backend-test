@@ -1,14 +1,12 @@
 import Config
 
-# Set the `:username` config value here with your Name or Github handler.
 config :vhs,
-  blocknative: %{
-    api_key: nil,
-    blockchain: "ethereum",
-    network: "main",
-    base_url: "https://api.blocknative.com"
-  },
-  slack: %{
-    base_url: "https://hooks.slack.com/services",
-    webhook_key: nil
-  }
+  username: "Dairon Medina Caro <codeadict>"
+
+# Configures Elixir's Logger
+config :logger, :console,
+  format: "$time $metadata[$level] $message\n",
+  metadata: [:request_id]
+
+# Set global adapter for Tesla
+config :tesla, :adapter, Tesla.Adapter.Mint
