@@ -7,3 +7,13 @@ services:
       - "4000:4000"
     env_file:
       - ./.envrc.local
+
+  ngrok:
+    image: shkoliar/ngrok:latest
+    ports:
+      - 4551:4551
+    links:
+      - app
+    environment:
+      - DOMAIN=app
+      - PORT=4000
