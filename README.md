@@ -14,3 +14,5 @@ You can run a `ngrok http 4000` to make the webhook on Blocknative work. Note th
 
 In the same config file the `:username` key needs to be set for the app to launch.
 
+The HTTP client on `config.exs` is missing on purpose. The project won't compile without this, if you want it to compile even with warnings, remove the `elixirc_options` key in `mix.exs`.
+
